@@ -45,7 +45,9 @@ class CahtScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
-          // await Firebase.initializeApp();
+          FirebaseFirestore.instance
+              .collection('chats/mNJDKVVbYkMUaZwwTueu/messages')
+              .add({'text': 'This was added by clicking the button!'});
         },
       ),
     );
