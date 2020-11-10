@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../widgets/chat/messages.dart';
 
 class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Widget _waitState() {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text('FlutterChat'),
@@ -41,25 +36,14 @@ class ChatScreen extends StatelessWidget {
           )
         ],
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('chats/mNJDKVVbYkMUaZwwTueu/messages')
-            .snapshots(),
-        builder: (ctx, streamSnapshot) {
-          if (streamSnapshot.connectionState == ConnectionState.waiting) {
-            return _waitState();
-          }
-
-          final documents = streamSnapshot.data.docs;
-
-          return ListView.builder(
-            itemCount: documents.length,
-            itemBuilder: (ctx, index) => Container(
-              padding: EdgeInsets.all(8),
-              child: Text(documents[index]['text']),
+      body: Container(
+        child: Column(
+          children: [
+            Expanded(
+              child: Messages(),
             ),
-          );
-        },
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
