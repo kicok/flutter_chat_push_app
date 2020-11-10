@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  AuthForm(this.submitFn);
+  AuthForm(this.submitFn, this.isLoading);
 
   final void Function(
     String email,
@@ -10,6 +10,8 @@ class AuthForm extends StatefulWidget {
     bool isLogin,
     BuildContext ctx,
   ) submitFn;
+  final bool isLoading;
+
   @override
   _AuthFormState createState() => _AuthFormState();
 }
@@ -95,21 +97,24 @@ class _AuthFormState extends State<AuthForm> {
                     obscureText: true, // password 문자를 다른문자로 가리기
                   ),
                   SizedBox(height: 12),
-                  RaisedButton(
-                    child: Text(_isLogin ? 'Login' : 'Signup '),
-                    onPressed: _trySubmit,
-                  ),
-                  FlatButton(
-                    textColor: Theme.of(context).primaryColor,
-                    child: Text(_isLogin
-                        ? 'Create new account'
-                        : 'I already have an account'),
-                    onPressed: () {
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
-                    },
-                  )
+                  if (widget.isLoading) CircularProgressIndicator(),
+                  if (!widget.isLoading)
+                    RaisedButton(
+                      child: Text(_isLogin ? 'Login' : 'Signup '),
+                      onPressed: _trySubmit,
+                    ),
+                  if (!widget.isLoading)
+                    FlatButton(
+                      textColor: Theme.of(context).primaryColor,
+                      child: Text(_isLogin
+                          ? 'Create new account'
+                          : 'I already have an account'),
+                      onPressed: () {
+                        setState(() {
+                          _isLogin = !_isLogin;
+                        });
+                      },
+                    )
                 ],
               ),
             ),
