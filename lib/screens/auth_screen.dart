@@ -46,8 +46,11 @@ class _AuthScreenState extends State<AuthScreen> {
             .ref()
             .child('user_image')
             .child(userCredential.user.uid + '.jpg');
+
         await ref.putFile(image);
         // 파일 업로드 ( putFile()이 분명 future가 아닌데 왜 await 이 가능한지는 문법적으로 아직 이해할수 없음. )
+
+        final url = await ref.getDownloadURL();
 
         //가입시 사용자 데이터 추가등록
         await FirebaseFirestore.instance
@@ -56,6 +59,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .set({
           'username': username,
           'email': email,
+          'image_url': url,
         });
       }
     } on PlatformException catch (err) {
