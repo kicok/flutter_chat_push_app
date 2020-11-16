@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +21,7 @@ class _AuthScreenState extends State<AuthScreen> {
     String email,
     String username,
     String password,
+    File image,
     bool isLogin,
     BuildContext ctx,
   ) async {
@@ -37,6 +41,13 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
+
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('user_image')
+            .child(userCredential.user.uid + '.jpg');
+        await ref.putFile(image);
+        // 파일 업로드 ( putFile()이 분명 future가 아닌데 왜 await 이 가능한지는 문법적으로 아직 이해할수 없음. )
 
         //가입시 사용자 데이터 추가등록
         await FirebaseFirestore.instance
