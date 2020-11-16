@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../pickers/user_image_picker.dart';
 
 class AuthForm extends StatefulWidget {
   AuthForm(this.submitFn, this.isLoading);
@@ -54,6 +55,7 @@ class _AuthFormState extends State<AuthForm> {
                 mainAxisSize:
                     MainAxisSize.min, // 열의 높이가 가능한한 많이 차지하지 않고 필요한 만큼만 확보
                 children: [
+                  if (!_isLogin) UserImagePicker(),
                   TextFormField(
                     key: ValueKey('email'),
                     validator: (value) {
